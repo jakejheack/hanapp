@@ -1,6 +1,6 @@
 workflows:
   ios-build:
-    name: iOS IPA Build (Manual Export)
+    name: iOS IPA Build (with automatic signing)
     environment:
       flutter: stable
       xcode: latest
@@ -9,17 +9,22 @@ workflows:
       - name: Install dependencies
         script: |
           flutter pub get
-      - name: Build Flutter iOS App (Release)
+      - name: Build iOS
         script: |
           flutter build ios --release --no-codesign
-      - name: Use Automatic Signing
+      - name: Set Code Signing
         script: |
           xcode-project use-profiles
-      - name: Export IPA
+      - name: Archive and Export
         script: |
           xcode-project build-ipa \
             --project ios/Runner.xcodeproj \
             --scheme Runner
     artifacts:
       - build/ios/ipa/*.ipa
-      - build/ios/ipa/*.dSYM.zip
+code_signing:
+  certificates:
+    - ios_distribution.p12
+  certificate_password: Encrypted(your_password)
+  provisioning_profiles:
+    - my_profile.mobileprovision
