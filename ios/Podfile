@@ -30,10 +30,11 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
-  pod 'Firebase/Core', '10.25.0'
-  pod 'Firebase/Auth', '10.25.0'
-  pod 'Firebase/Firestore', '10.25.0'
-  pod 'Firebase/Messaging', '10.25.0'
+  pod 'Firebase/Auth', '11.15.0'
+  pod 'Firebase/Core', '11.15.0'
+  pod 'Firebase/Firestore', '11.15.0'
+  pod 'Firebase/Messaging', '11.15.0'
+
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
