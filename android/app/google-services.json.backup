@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "758079153152",
+    "project_id": "hanappproject",
+    "storage_bucket": "hanappproject.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758079153152:android:508d83c7c6e672ae6a64e5",
+        "android_client_info": {
+          "package_name": "com.example.hanapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "758079153152-3ep62fkktfqqtrr9aq3jtuc5ba4u33eq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hanapp",
+            "certificate_hash": "5d451045e6134836afc5453f892a0b5a5789a64a"
+          }
+        },
+        {
+          "client_id": "758079153152-eal0saotgvdlcee9p68jsu5h7uhq2it7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hanapp",
+            "certificate_hash": "a155c96d9463468c0bbcf14b214330c43529fc8d"
+          }
+        },
+        {
+          "client_id": "758079153152-loocnhnrakp60dscikq2p37q9nt5dalg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV3PZd7rLbppacAnq6Q12R2kouALhY3u4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "758079153152-loocnhnrakp60dscikq2p37q9nt5dalg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "758079153152-ktuo5f615qoerei6jqlnabrotve9lno6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hanapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,35 @@
+# Force cache bypass for auth endpoints
+<IfModule mod_headers.c>
+    # Disable caching for all auth endpoints
+    <FilesMatch "\.(php)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0, private, no-transform"
+        Header set Pragma "no-cache"
+        Header set Expires "-1"
+        Header set X-Cache-Status "BYPASS"
+        Header set X-No-Cache "true"
+        Header set X-Accel-Buffering "no"
+    </FilesMatch>
+    
+    # Specifically for login endpoint
+    <Files "login.php">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0, private, no-transform"
+        Header set Pragma "no-cache"
+        Header set Expires "-1"
+        Header set X-Cache-Status "BYPASS"
+        Header set X-No-Cache "true"
+        Header set X-Accel-Buffering "no"
+        Header set X-Response-ID "no-cache"
+    </Files>
+</IfModule>
+
+# Force PHP to not cache
+<IfModule mod_php.c>
+    php_flag output_buffering Off
+</IfModule>
+
+# Disable LiteSpeed cache for auth endpoints
+<IfModule LiteSpeed>
+    RewriteEngine On
+    RewriteRule .* - [E=noabort:1]
+    RewriteRule .* - [E=noconntimeout:1]
+</IfModule> 
