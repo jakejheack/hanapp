@@ -6,7 +6,7 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
-        BUNDLE_ID: "com.example.myapp"
+        BUNDLE_ID: "com.example.hanapp"
     triggering:
       events:
         - push
