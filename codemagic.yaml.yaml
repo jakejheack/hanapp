@@ -1,0 +1,40 @@
+workflows:
+  ios-build:
+    name: iOS IPA Build (Manual Distribution)
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      vars:
+        BUNDLE_ID: "com.example.myapp"
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: "main"
+          include: true
+    scripts:
+      - name: Set up keychain
+        script: |
+          keychain initialize
+      - name: Install dependencies
+        script: |
+          flutter pub get
+      - name: Build iOS release
+        script: |
+          flutter build ios --release --no-codesign
+      - name: Export IPA
+        script: |
+          xcode-project use-profiles
+          xcode-project build-ipa \
+            --project ios/Runner.xcodeproj \
+            --scheme Runner \
+            --export-method development
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/ipa/*.dSYM.zip
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - jheackjardine111@email.com
