@@ -22,9 +22,3 @@ workflows:
             --scheme Runner
     artifacts:
       - build/ios/ipa/*.ipa
-code_signing:
-  certificates:
-    - ios_distribution.p12
-  certificate_password: Encrypted(your_password)
-  provisioning_profiles:
-    - my_profile.mobileprovision
