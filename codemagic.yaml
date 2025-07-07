@@ -1,40 +1,25 @@
 workflows:
   ios-build:
-    name: iOS IPA Build (Manual Distribution)
+    name: iOS IPA Build (Manual Export)
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
-      vars:
-        BUNDLE_ID: "com.example.hanapp"
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: "main"
-          include: true
     scripts:
-      - name: Set up keychain
-        script: |
-          keychain initialize
       - name: Install dependencies
         script: |
           flutter pub get
-      - name: Build iOS release
+      - name: Build Flutter iOS App (Release)
         script: |
           flutter build ios --release --no-codesign
-      - name: Export IPA
+      - name: Use Automatic Signing
         script: |
           xcode-project use-profiles
+      - name: Export IPA
+        script: |
           xcode-project build-ipa \
             --project ios/Runner.xcodeproj \
-            --scheme Runner \
-            --export-method development
+            --scheme Runner
     artifacts:
       - build/ios/ipa/*.ipa
       - build/ios/ipa/*.dSYM.zip
-      - flutter_drive.log
-    publishing:
-      email:
-        recipients:
-          - jheackjardine111@email.com
