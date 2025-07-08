@@ -5,7 +5,6 @@ on:
 
 jobs:
   build-ios:
-    name: 🎉 iOS Build
     runs-on: macos-latest
 
     steps:
@@ -14,37 +13,42 @@ jobs:
       - name: 🛠 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: stable
           architecture: x64
-      - name: 🧹 Clean Flutter build
+          
+      - name: 🧹 Clean build
         run: flutter clean
-      
-      - name: 📦 Get Flutter packages
+        
+      - name: 📦 Install Flutter dependencies
         run: flutter pub get
-      - name: 💥 Deintegrate CocoaPods
-        run: pod deintegrate
-        working-directory: ios
+        
+      - name: 🔍 Check generated Flutter iOS files
+        run: ls -la ios/Flutter
 
-      - name: 🔄 Install CocoaPods dependencies
-        run: pod install --repo-update
-        working-directory: ios
+      - name: 🧩 Flutter iOS Dependencies Setup
+        run: flutter precache --ios
 
-      - name: 📦 Build iOS (no codesign)
+      - name: ⚙️ Run pod install
+        run: |
+          cd ios
+          pod deintegrate
+          pod install --repo-update
+          cd ..
+
+      - name: 🏗️ Build IPA (No Code Signing)
         run: flutter build ios --release --no-codesign
 
-      - name: 📁 Prepare IPA payload
-        run: mkdir Payload && mv Runner.app Payload
-        working-directory: build/ios/iphoneos
+      - name: 📂 Prepare Payload folder
+        run: mkdir -p Payload && cp -r build/ios/iphoneos/Runner.app Payload/
 
-      - name: 📦 Zip to IPA format
+      - name: 📦 Create IPA file
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
-        working-directory: build/ios/iphoneos
 
-      - name: 🚀 Upload IPA to GitHub Release
+      - name: 🚀 Upload IPA to Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/ios/iphoneos/FlutterIpaExport.ipa
+          file: FlutterIpaExport.ipa
           tag: v1.0
           overwrite: true
-          body: "This is the first release"
+          body: "First iOS IPA release"
