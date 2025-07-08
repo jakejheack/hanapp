@@ -10,45 +10,49 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: 🛠 Setup Flutter
+      - name: 💪 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           architecture: x64
-          
-      - name: 🧹 Clean build
-        run: flutter clean
-        
-      - name: 📦 Install Flutter dependencies
+
+      - name: 📦 Get Flutter dependencies
         run: flutter pub get
-        
-      - name: 🔍 Check generated Flutter iOS files
-        run: ls -la ios/Flutter
 
-      - name: 🧩 Flutter iOS Dependencies Setup
-        run: flutter precache --ios
+      - name: 🛋️ Clean and precache
+        run: |
+          flutter clean
+          flutter precache --ios
 
-      - name: ⚙️ Run pod install
+      - name: 🌐 Ensure iOS Flutter environment exists
+        run: |
+          flutter pub get
+          mkdir -p ios/Flutter
+          touch ios/Flutter/Generated.xcconfig
+
+      - name: ✨ CocoaPods install
         run: |
           cd ios
-          pod deintegrate
+          pod deintegrate || true
           pod install --repo-update
           cd ..
 
-      - name: 🏗️ Build IPA (No Code Signing)
+      - name: 🏗️ Build iOS release (no codesign)
         run: flutter build ios --release --no-codesign
 
-      - name: 📂 Prepare Payload folder
-        run: mkdir -p Payload && cp -r build/ios/iphoneos/Runner.app Payload/
+      - name: 📂 Create Payload folder
+        run: |
+          mkdir -p Payload
+          cp -r build/ios/iphoneos/Runner.app Payload/
 
-      - name: 📦 Create IPA file
+      - name: 📦 Zip IPA
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
 
-      - name: 🚀 Upload IPA to Release
+      - name: 🚀 Upload IPA to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: FlutterIpaExport.ipa
           tag: v1.0
           overwrite: true
-          body: "First iOS IPA release"
+          body: "This is the first iOS release build from GitHub Actions"
