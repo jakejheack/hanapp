@@ -16,13 +16,11 @@ jobs:
         with:
           channel: 'stable'
           architecture: x64
-
-      - name: 📦 Get Flutter packages
-        run: flutter pub get
-
       - name: 🧹 Clean Flutter build
         run: flutter clean
-
+      
+      - name: 📦 Get Flutter packages
+        run: flutter pub get
       - name: 💥 Deintegrate CocoaPods
         run: pod deintegrate
         working-directory: ios
